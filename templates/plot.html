@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv='cache-control' content='no-cache'>
+  <meta http-equiv='expires' content='0'>
+  <link rel="shortcut icon" href="../../static/favicon.ico" type="image/x-icon">
+  <meta http-equiv='pragma' content='no-cache'>
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"   />
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@3.0.0-rc12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@3"></script>
+  <script src="https://vega.github.io/datalib/datalib.min.js"></script>
+  <!-- <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" /> -->
+  <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
+  <script type="text/javascript">
+    function add_model(){
+
+    }
+
+    function foo(){
+      var arr = []
+      var models=[]
+      for (let i = 0; i < document.getElementsByClassName('checkbox-item-11').length; i++) {
+        if (document.getElementsByClassName('checkbox-item-11')[i].checked){
+          models.push(document.getElementsByClassName('checkbox-item-11')[i].value)
+        };
+
+      }
+      for (let i = 0; i < document.getElementsByClassName('checkbox-item-11').length; i++) {
+        if (document.getElementsByClassName('checkbox-item-11')[i].checked){
+          arr.push(true)
+        };
+
+      }
+
+      document.getElementById('models').value=models;
+      console.log(arr.length)
+      if (arr.length!=0) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    document.getElementById('myForm').submit(function(e) {
+      if (!foo()) {
+        e.preventDefault();
+      }
+    })
+  </script>
+  <!-- Vega Tooltip
+    <script src="https://vega.github.io/vega-tooltip/vega-tooltip.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://vega.github.io/vega-tooltip/vega-tooltip.css">-->
+  <!-- Import Vega 3 & Vega-Lite 2 (does not have to be from CDN) -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vega-tooltip@0.16.0/vega-tooltip.scss">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vega-tooltip@0.16.0/build/vega-tooltip.min.js"></script>
+  <title>Forecasting Tool</title>
+</head>
+
+<body>
+  <div class="min-h-screen bg-gray-100">
+    <main>
+      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 ">
+        <div class="px-4 py-6 sm:px-0 ">
+          <div class="h-96 rounded-lg border-gray-200 drop-shadow-2xl">
+            <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6 text-center">
+                <h3 class="text-3xl font-bold leading-6 text-gray-900">
+                  Data Forecasting Tool
+                </h3>
+              </div>
+              <div class="border-t border-gray-200 flex justify-center">
+                <form action="/plot" method="POST" onclick="return foo();" id="myForm">
+                  <div class="shadow sm:overflow-hidden sm:rounded-md w-screen items-center flex justify-center">
+                    <div class="space-y-2 bg-white px-4 py-5 sm:p-6 w-2/6">
+                      <div class="flex p-2">
+                        <label for="category"
+                          class="block mb-2 text-md font-medium text-gray-900 dark:text-gray-400 w-40">Choose
+                          category:</label>
+
+                        <select
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                          aria-label="Default select example" id="category" class="classic" name="category" required>
+                          <option value="" disabled selected>Select Category...</option>
+                          {{option_string|safe}}
+                        </select>
+
+                      </div>
+
+                      <div class="px-4 py-3 text-center sm:px-6">
+                        <button type="submit"
+                          class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          Make Plot
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="shadow sm:overflow-hidden sm:rounded-md w-screen items-center flex justify-center h-20">
+
+                    <button id="dropdownBgHoverButton" data-dropdown-toggle="dropdownBgHover" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 h-12" type="button">Select Model<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdownBgHover" class="hidden z-10 w-48 bg-white rounded shadow dark:bg-gray-700">
+                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownBgHoverButton">
+                          {{model_HTML_string|safe}}
+                        </ul>
+                    </div>
+                    <input id='models' name="models" type="hidden" ></input>
+
+                  </div>
+                </form>
+                <hr>
+                <!-- Placeholder for the tooltip -->
+                <div id="vis-tooltip" class="vg-tooltip"></div>
+              </div>
+              <div class="border-t border-gray-200 flex  justify-evenly">
+                <div class="shadow sm:overflow-hidden sm:rounded-md space-y-1 bg-white px-4 py-3 sm:p-6">
+                  <div class="text-center">
+                    <h2 class="text-xl font-medium leading-6 text-gray-900">Category Info</h2>
+                  </div>
+
+                  <h3 class="text-sm font-medium  text-gray-900">
+                    Category Name: {{name}}
+                  </h3>
+                  <h3 class="text-sm font-medium  text-gray-900">Duration: {{duration}}</h3>
+                  <h3 class="text-sm font-medium  text-gray-900">Duration in Years: {{total_duration}}
+                  </h3>
+                  <h3 class="text-sm font-medium  text-gray-900">Total Quantity of Sales:
+                    {{total_quantity}}</h3>
+                </div>
+
+              </div>
+              <div class="flex justify-center mt-5 w-full h-full">
+                <div class="row drop-shadow-2xl rounded shadow-2xl mb-5 p-5">
+                  <div id="graph"></div>
+                </div>
+                <hr>
+                <!-- Placeholder for the tooltip -->
+                <div id="vis-tooltip" class="vg-tooltip"></div>
+                <div class="row drop-shadow-2xl rounded shadow-2xl mb-5 p-5">
+                  {{future_pred|safe}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /End replace -->
+    </main>
+  </div>
+  <style>
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+        .styled-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+        .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+    }
+        .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+        .styled-table tbody tr.active-row {
+        font-weight: bold;
+        color: #009879;
+    }
+    </style>
+  <!-- Render Charts -->
+  <script type="text/javascript">
+    function parse(url, div) {
+      var opt = {
+        mode: "vega-lite",
+        renderer: "svg",
+        actions: {
+          export: true,
+          source: false,
+          editor: false
+        }
+      };
+
+      vegaEmbed("#" + div, url, opt, function (error, result) {
+        // result.view is the Vega View, url is the original Vega-Lite specification
+        vegaTooltip.vegaLite(result.view, url);
+      });
+    }
+
+
+    parse("/data/json", "graph");
+  </script>
+</body>
+
+</html>
