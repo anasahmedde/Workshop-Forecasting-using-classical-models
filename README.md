@@ -66,7 +66,8 @@ The following models are available for selection within the application:
 Explore the live demo of the project at the following link: [Workshop Forecasting Demo](https://anasahmeddeahmed1462002.pythonanywhere.com/).
 
 > **Note:** When selecting the XGBoost model for forecasting, please be aware that generating the plot might take some additional time due to the model's complexity as the application is depployed using free service of pythonanywhere.com.
-![Screenshot 2024-08-19 160231](https://github.com/user-attachments/assets/526a86f2-8bd5-4a13-9d52-6901df3b4444)
+
+![359078929-526a86f2-8bd5-4a13-9d52-6901df3b4444](https://github.com/user-attachments/assets/858da81b-ba22-4b97-ad39-92be08b0a12b)
 
 ## Advantages of Classical Models
 Classical models have significant advantages, including:
